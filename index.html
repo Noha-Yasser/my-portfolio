@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Noha Y. Alqrenawi — Cybersecurity Engineering student at UCAS, Gaza. SOC analysis, threat hunting, and web application security.">
+<meta name="theme-color" content="#0a0912">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Noha Y. Alqrenawi — Cybersecurity Engineering Student">
+<meta property="og:description" content="SOC analysis, threat hunting, and web application security. 1st in Palestine in the Cybersecurity track at AI Olympics.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9B%A1%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<title>Noha Y. Alqrenawi — Cybersecurity Engineering Student</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0a0912;
+    --panel:#141122;
+    --panel-2:#1b1730;
+    --line:#2b2542;
+    --purple-deep:#6b3fa0;
+    --purple-mid:#8b5fbf;
+    --lavender:#c9a7e8;
+    --lavender-soft:#ded0f2;
+    --text:#f2eef7;
+    --muted:#a79dbd;
+    --ping:#7fe0b8;
+    --scan:#c9a7e8;
+    --grad-op:1;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+    --sans-ar: 'Tajawal', sans-serif;
+  }
+  html[data-theme="light"]{
+    --void:#f7f5fb;
+    --panel:#ffffff;
+    --panel-2:#f1ecf9;
+    --line:#e0d6f0;
+    --purple-deep:#6b3fa0;
+    --purple-mid:#7c4fb0;
+    --lavender:#8a5fc0;
+    --lavender-soft:#5e3a94;
+    --text:#1c1730;
+    --muted:#6a6280;
+    --ping:#1f9d6c;
+    --scan:#7c4fb0;
+    --grad-op:0.5;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    overflow-x:hidden;
+    transition:background .3s ease, color .3s ease;
+  }
+  html[lang="ar"] body{font-family:var(--sans-ar);}
+  html[lang="ar"] .terminal-body, html[lang="ar"] .prompt, html[lang="ar"] .t-date,
+  html[lang="ar"] .section-tag, html[lang="ar"] .c-date, html[lang="ar"] .cert-badge,
+  html[lang="ar"] .lang-level, html[lang="ar"] .fact .label, html[lang="ar"] .c-label,
+  html[lang="ar"] .skill-pct{font-family:var(--sans-ar);}
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    opacity:var(--grad-op);
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(139,95,191,0.14), transparent 40%),
+      radial-gradient(circle at 85% 30%, rgba(201,167,232,0.10), transparent 45%),
+      radial-gradient(circle at 50% 90%, rgba(107,63,160,0.12), transparent 50%);
+    pointer-events:none;
+    z-index:0;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px; position:relative; z-index:1;}
+  ::selection{background:var(--purple-mid); color:#fff;}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:color-mix(in srgb, var(--void) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1080px; margin:0 auto; padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .prompt{
+    font-family:var(--mono); font-size:14px; color:var(--lavender);
+    display:flex; align-items:center; gap:8px; flex-shrink:0;
+  }
+  .prompt .cursor{display:inline-block; width:8px; height:16px; background:var(--lavender); animation:blink 1.1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  nav.links{display:flex; gap:24px; font-size:14px; color:var(--muted); flex-wrap:wrap;}
+  nav.links a{transition:color .2s;}
+  nav.links a:hover{color:var(--lavender-soft);}
+  .nav-controls{display:flex; align-items:center; gap:10px;}
+  .icon-btn{
+    background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+    width:38px; height:38px; border-radius:8px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; font-size:15px;
+    transition:border-color .2s, transform .15s;
+  }
+  .icon-btn:hover{border-color:var(--purple-mid); transform:translateY(-1px);}
+  #lang-toggle{font-family:var(--mono); font-size:12px; font-weight:700; width:auto; padding:0 12px;}
+  .nav-toggle{display:none; flex-direction:column; gap:4px; background:none; border:none; cursor:pointer;}
+  .nav-toggle span{width:22px; height:2px; background:var(--text);}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:76px 0 90px; position:relative;}
+  .hero-grid{display:grid; grid-template-columns:1.15fr 0.85fr; gap:56px; align-items:center;}
+  .terminal{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px; overflow:hidden;
+    box-shadow:0 30px 60px -30px rgba(107,63,160,0.5);
+  }
+  .terminal-bar{display:flex; align-items:center; gap:8px; padding:10px 14px; background:var(--panel-2); border-bottom:1px solid var(--line);}
+  .dot{width:10px; height:10px; border-radius:50%;}
+  .dot.r{background:#e8768a;} .dot.y{background:#e8c976;} .dot.g{background:var(--ping);}
+  .terminal-title{margin-left:10px; font-family:var(--mono); font-size:12px; color:var(--muted);}
+  .terminal-body{padding:26px 26px 30px; font-family:var(--mono); font-size:14.5px;}
+  .terminal-body .line{margin-bottom:10px; color:var(--muted);}
+  .terminal-body .line .k{color:var(--ping);}
+  .terminal-body .line .val{color:var(--text);}
+  .terminal-body h1{font-family:var(--sans); font-size:2.5rem; font-weight:800; line-height:1.15; margin:18px 0 6px; color:var(--text);}
+  html[lang="ar"] .terminal-body h1{font-family:var(--sans-ar);}
+  .terminal-body .role{font-family:var(--mono); font-size:15px; color:var(--lavender); margin-bottom:18px;}
+  html[lang="ar"] .terminal-body .role{font-family:var(--sans-ar);}
+  .status-badge{
+    display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12.5px; color:var(--ping);
+    border:1px solid color-mix(in srgb, var(--ping) 35%, transparent);
+    background:color-mix(in srgb, var(--ping) 6%, transparent);
+    padding:6px 12px; border-radius:20px; margin-bottom:22px;
+  }
+  .status-badge .pulse{width:7px; height:7px; border-radius:50%; background:var(--ping); animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(127,224,184,.5);} 70%{box-shadow:0 0 0 8px rgba(127,224,184,0);} 100%{box-shadow:0 0 0 0 rgba(127,224,184,0);}}
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:6px;}
+  .btn{font-family:var(--sans); font-weight:600; font-size:14.5px; padding:12px 22px; border-radius:8px; cursor:pointer; border:1px solid transparent; transition:transform .15s ease, background .2s ease, border-color .2s ease; display:inline-flex; align-items:center; gap:8px;}
+  html[lang="ar"] .btn{font-family:var(--sans-ar);}
+  .btn-primary{background:var(--purple-mid); color:#fff;}
+  .btn-primary:hover{background:var(--purple-deep); transform:translateY(-2px);}
+  .btn-ghost{border-color:var(--line); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--lavender); color:var(--lavender-soft); transform:translateY(-2px);}
+
+  /* ---- scanner photo frame ---- */
+  .portrait-frame{position:relative; justify-self:center; width:100%; max-width:320px;}
+  .scan-box{
+    position:relative; border-radius:16px; overflow:hidden; border:1px solid var(--line);
+    box-shadow:0 20px 50px -20px rgba(107,63,160,.55);
+  }
+  .scan-box img{width:100%; display:block; filter:saturate(1.03);}
+  .scan-line{
+    position:absolute; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, transparent, var(--scan), transparent);
+    box-shadow:0 0 14px 2px var(--scan);
+    top:0; animation:scan-move 3.2s ease-in-out infinite;
+    opacity:.9;
+  }
+  @keyframes scan-move{
+    0%{ top:2%; } 50%{ top:96%; } 100%{ top:2%; }
+  }
+  .scan-corner{position:absolute; width:22px; height:22px; border-color:var(--lavender); z-index:2;}
+  .scan-corner.tl{top:8px; left:8px; border-top:2px solid var(--lavender); border-left:2px solid var(--lavender);}
+  .scan-corner.tr{top:8px; right:8px; border-top:2px solid var(--lavender); border-right:2px solid var(--lavender);}
+  .scan-corner.bl{bottom:8px; left:8px; border-bottom:2px solid var(--lavender); border-left:2px solid var(--lavender);}
+  .scan-corner.br{bottom:8px; right:8px; border-bottom:2px solid var(--lavender); border-right:2px solid var(--lavender);}
+  .scan-tag{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    margin-top:16px; font-family:var(--mono); font-size:12px; color:var(--ping);
+  }
+  .scan-tag .sdot{width:6px; height:6px; border-radius:50%; background:var(--ping); animation:pulse 1.8s infinite;}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:86px 0; position:relative;}
+  .section-head{margin-bottom:44px;}
+  .section-tag{font-family:var(--mono); font-size:13px; color:var(--purple-mid); margin-bottom:10px;}
+  html[lang="ar"] .section-tag{font-family:var(--sans-ar); font-weight:700;}
+  .section-title{font-size:2rem; font-weight:800; letter-spacing:-0.01em;}
+  .section-sub{color:var(--muted); max-width:620px; margin-top:10px; font-size:15.5px;}
+  .divider{height:1px; background:linear-gradient(90deg, var(--line), transparent);}
+  html[dir="rtl"] .divider{background:linear-gradient(270deg, var(--line), transparent);}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid; grid-template-columns:1.4fr 1fr; gap:50px; align-items:start;}
+  .about-grid p{color:var(--muted); margin-bottom:16px; font-size:15.5px;}
+  .about-grid strong{color:var(--lavender-soft); font-weight:600;}
+  .facts{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:26px; display:flex; flex-direction:column; gap:18px;}
+  .fact{display:flex; justify-content:space-between; gap:10px; font-size:14px; border-bottom:1px solid var(--line); padding-bottom:14px;}
+  .fact:last-child{border-bottom:none; padding-bottom:0;}
+  .fact .label{color:var(--muted); font-family:var(--mono); font-size:12.5px;}
+  .fact .value{color:var(--text); font-weight:600; text-align:right;}
+  html[dir="rtl"] .fact .value{text-align:left;}
+
+  /* ---------- SKILLS (percentage bars) ---------- */
+  .skill-cats{display:grid; grid-template-columns:repeat(2,1fr); gap:26px;}
+  .skill-card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:24px;}
+  .skill-card h3{font-family:var(--mono); font-size:13.5px; color:var(--lavender); margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid var(--line);}
+  html[lang="ar"] .skill-card h3{font-family:var(--sans-ar); font-weight:700;}
+  .skill-row{margin-bottom:14px;}
+  .skill-row:last-child{margin-bottom:0;}
+  .skill-top{display:flex; justify-content:space-between; font-size:13.5px; margin-bottom:6px;}
+  .skill-pct{font-family:var(--mono); color:var(--muted); font-size:12px;}
+  .skill-track{height:6px; border-radius:4px; background:var(--panel-2); overflow:hidden;}
+  .skill-fill{height:100%; border-radius:4px; background:linear-gradient(90deg, var(--purple-deep), var(--lavender)); width:0%; transition:width 1.1s ease;}
+  .soft-tags{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{font-size:13px; padding:6px 12px; border-radius:6px; background:var(--panel-2); border:1px solid var(--line); color:var(--text);}
+
+  /* ---------- PROJECTS ---------- */
+  .filter-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px;}
+  .filter-chip{
+    font-family:var(--mono); font-size:12.5px; padding:7px 14px; border-radius:20px;
+    border:1px solid var(--line); color:var(--muted); cursor:pointer; background:var(--panel);
+    transition:all .2s;
+  }
+  .filter-chip.active, .filter-chip:hover{border-color:var(--purple-mid); color:var(--lavender-soft);}
+  .project-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px;}
+  .project-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+  .project-thumb{
+    position:relative; overflow:hidden; height:190px; background:
+      repeating-linear-gradient(135deg, var(--panel-2), var(--panel-2) 10px, var(--panel) 10px, var(--panel) 20px);
+    display:flex; align-items:center; justify-content:center; color:var(--muted);
+    font-family:var(--mono); font-size:12px; border-bottom:1px solid var(--line);
+  }
+  .project-body{padding:20px;}
+  .project-body h4{font-size:15.5px; margin-bottom:8px;}
+  .project-body p{color:var(--muted); font-size:13.5px; margin-bottom:12px;}
+  .project-tags{display:flex; flex-wrap:wrap; gap:6px;}
+  .project-tags span{font-family:var(--mono); font-size:11px; color:var(--lavender); background:var(--panel-2); padding:3px 8px; border-radius:5px;}
+  .project-empty{
+    grid-column:1/-1; border:1px dashed var(--line); border-radius:14px; padding:44px 24px; text-align:center;
+    color:var(--muted); font-size:14.5px;
+  }
+  .project-empty strong{display:block; color:var(--lavender-soft); font-size:16px; margin-bottom:8px;}
+
+  /* ---------- EVENTS & GALLERY ---------- */
+  .gallery-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:18px;}
+  .gallery-card{background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; transition:border-color .2s;}
+  .gallery-card:hover{border-color:var(--purple-mid);}
+  .gallery-thumb{position:relative; height:170px; background:var(--panel-2); overflow:hidden;}
+  .gallery-thumb img{width:100%; height:100%; object-fit:cover; display:block;}
+  .gallery-ph{
+    position:absolute; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; gap:6px;
+    color:var(--muted); font-family:var(--mono); font-size:11.5px; text-align:center; padding:10px;
+    background:repeating-linear-gradient(135deg, var(--panel-2), var(--panel-2) 10px, var(--panel) 10px, var(--panel) 20px);
+  }
+  .gallery-icon{
+    position:absolute; top:10px; left:10px; background:rgba(10,9,18,0.72); border:1px solid var(--line);
+    width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:13px; z-index:2;
+  }
+  html[dir="rtl"] .gallery-icon{left:auto; right:10px;}
+  .gallery-cap{padding:13px 15px; font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:8px;}
+  .gallery-thumb .slide, .project-thumb .slide{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .8s ease;}
+  .gallery-thumb .slide.on, .project-thumb .slide.on{opacity:1;}
+  .project-thumb .slide{object-fit:contain; background:#0b0a12;}
+  .gallery-year{position:absolute; top:10px; inset-inline-end:10px; z-index:2; background:rgba(10,9,18,0.72); border:1px solid var(--line); border-radius:7px; padding:4px 8px; font-family:var(--mono); font-size:11px; color:var(--lavender);}
+  .slide-dots{position:absolute; bottom:8px; left:0; right:0; display:flex; justify-content:center; gap:5px; z-index:2;}
+  .slide-dots i{width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.45); transition:background .3s;}
+  .slide-dots i.on{background:var(--lavender);}
+  .gallery-extra{padding:0 15px 14px;}
+  .gallery-cap + .gallery-extra{margin-top:-4px;}
+  .gallery-desc{font-size:12.5px; color:var(--muted); line-height:1.55; margin-bottom:8px;}
+  .gallery-link{font-family:var(--mono); font-size:11.5px; color:var(--lavender); text-decoration:none;}
+  .gallery-link:hover{text-decoration:underline;}
+  .news-row{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:14px; margin-top:14px;}
+  .news-card{display:block; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; text-decoration:none; color:var(--text); font-size:13.5px; font-weight:600; line-height:1.5; transition:border-color .2s;}
+  .news-card:hover{border-color:var(--purple-mid);}
+  .news-card span{display:block; font-family:var(--mono); font-size:11.5px; color:var(--lavender); margin-top:6px; font-weight:400;}
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{position:relative; padding-left:28px;}
+  html[dir="rtl"] .timeline{padding-left:0; padding-right:28px;}
+  .timeline::before{content:""; position:absolute; left:6px; top:6px; bottom:6px; width:1px; background:var(--line);}
+  html[dir="rtl"] .timeline::before{left:auto; right:6px;}
+  .t-item{position:relative; padding-bottom:36px;}
+  .t-item:last-child{padding-bottom:0;}
+  .t-item::before{content:""; position:absolute; left:-28px; top:4px; width:11px; height:11px; border-radius:50%; background:var(--void); border:2px solid var(--purple-mid);}
+  html[dir="rtl"] .t-item::before{left:auto; right:-28px;}
+  .t-date{font-family:var(--mono); font-size:12.5px; color:var(--purple-mid); margin-bottom:6px;}
+  .t-title{font-weight:700; font-size:16.5px; margin-bottom:3px;}
+  .t-org{color:var(--lavender); font-size:14px; margin-bottom:8px;}
+  .t-desc{color:var(--muted); font-size:14.5px;}
+  .t-desc ul{margin-top:6px; padding-left:18px;}
+  html[dir="rtl"] .t-desc ul{padding-left:0; padding-right:18px;}
+  .t-desc li{margin-bottom:4px;}
+
+  .subhead{font-family:var(--mono); font-size:13px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin:44px 0 20px;}
+  html[lang="ar"] .subhead{font-family:var(--sans-ar); text-transform:none; font-weight:700;}
+  .subhead:first-child{margin-top:0;}
+
+  /* ---------- CERTS ---------- */
+  .cert-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px;}
+  .cert-card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:22px; display:flex; flex-direction:column; gap:12px; transition:border-color .2s ease;}
+  .cert-card:hover{border-color:var(--purple-mid);}
+  .cert-top{display:flex; justify-content:space-between; align-items:flex-start; gap:12px;}
+  .cert-badge{font-family:var(--mono); font-size:11px; color:var(--void); background:var(--lavender); padding:5px 8px; border-radius:6px; white-space:nowrap; font-weight:700;}
+  .cert-body h4{font-size:15px; margin-bottom:4px;}
+  .cert-body p{color:var(--muted); font-size:13.5px;}
+  .cert-view-btn{
+    align-self:flex-start; font-family:var(--mono); font-size:12px; color:var(--lavender);
+    border:1px solid var(--line); background:var(--panel-2); padding:7px 12px; border-radius:7px; cursor:pointer;
+    transition:border-color .2s;
+  }
+  .cert-view-btn:hover{border-color:var(--purple-mid);}
+  .status-tag{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--mono); font-size:11.5px; color:#e8c976;
+    border:1px solid rgba(232,201,118,0.35); background:rgba(232,201,118,0.08);
+    padding:6px 11px; border-radius:6px; width:fit-content;
+  }
+  .status-tag .sp{width:6px; height:6px; border-radius:50%; background:#e8c976;}
+
+  /* ---------- COURSES ---------- */
+  .course-list{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+  .course-item{border:1px solid var(--line); border-radius:10px; padding:18px 20px; background:var(--panel);}
+  .course-item .c-top{display:flex; justify-content:space-between; gap:10px; margin-bottom:6px;}
+  .course-item h4{font-size:14.5px;}
+  .course-item .c-date{font-family:var(--mono); font-size:11.5px; color:var(--muted); white-space:nowrap;}
+  .course-item p{color:var(--muted); font-size:13.5px; margin-bottom:10px;}
+
+  /* ---------- LANGUAGES ---------- */
+  .lang-row{display:flex; gap:40px; flex-wrap:wrap;}
+  .lang-item{min-width:160px;}
+  .lang-item .lname{font-weight:700; margin-bottom:8px; font-size:15px;}
+  .lang-bar{height:6px; border-radius:4px; background:var(--panel-2); overflow:hidden;}
+  .lang-fill{height:100%; background:linear-gradient(90deg, var(--purple-deep), var(--lavender));}
+  .lang-level{font-family:var(--mono); font-size:11.5px; color:var(--muted); margin-top:6px;}
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  .contact-card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:22px; display:flex; align-items:center; gap:16px;}
+  .contact-icon{width:40px; height:40px; border-radius:9px; background:var(--panel-2); display:flex; align-items:center; justify-content:center; color:var(--lavender); font-family:var(--mono); font-size:15px; flex-shrink:0;}
+  .contact-card .c-label{font-family:var(--mono); font-size:11.5px; color:var(--muted);}
+  .contact-card .c-value{font-size:14.5px; font-weight:600; word-break:break-word;}
+
+  footer{border-top:1px solid var(--line); padding:30px 0; text-align:center; font-family:var(--mono); font-size:12.5px; color:var(--muted);}
+  html[lang="ar"] footer{font-family:var(--sans-ar);}
+
+  /* ---------- CERT MODAL ---------- */
+  #cert-modal{
+    position:fixed; inset:0; z-index:200; display:none;
+    align-items:center; justify-content:center;
+    background:rgba(5,4,10,0.82); backdrop-filter:blur(4px);
+    padding:24px;
+  }
+  #cert-modal.open{display:flex;}
+  .cert-modal-box{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    max-width:560px; width:100%; max-height:88vh; overflow:hidden;
+    display:flex; flex-direction:column;
+    box-shadow:0 40px 90px -20px rgba(0,0,0,0.7);
+  }
+  .cert-modal-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 20px; border-bottom:1px solid var(--line);
+  }
+  .cert-modal-head h4{font-size:15px;}
+  #cert-modal-close{background:none; border:none; color:var(--muted); font-size:20px; cursor:pointer;}
+  .cert-modal-body{padding:20px; overflow:auto; display:flex; align-items:center; justify-content:center; background:var(--panel-2);}
+  .cert-modal-body img{max-width:100%; max-height:65vh; display:block; border-radius:6px;}
+  .cert-modal-empty{
+    padding:50px 24px; text-align:center; color:var(--muted); font-size:14px; font-family:var(--mono);
+  }
+
+  /* ---------- CHATBOT ---------- */
+  #chat-toggle{position:fixed; bottom:26px; right:26px; z-index:100; width:58px; height:58px; border-radius:50%; background:var(--purple-mid); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 12px 30px -8px rgba(139,95,191,.7); transition:transform .2s ease;}
+  html[dir="rtl"] #chat-toggle{right:auto; left:26px;}
+  #chat-toggle:hover{transform:scale(1.06);}
+  #chat-toggle svg{width:26px; height:26px;}
+  #chat-panel{position:fixed; bottom:96px; right:26px; z-index:100; width:360px; max-width:calc(100vw - 40px); height:480px; max-height:calc(100vh - 140px); background:var(--panel); border:1px solid var(--line); border-radius:16px; display:none; flex-direction:column; overflow:hidden; box-shadow:0 30px 70px -20px rgba(0,0,0,.6);}
+  html[dir="rtl"] #chat-panel{right:auto; left:26px;}
+  #chat-panel.open{display:flex;}
+  .chat-head{padding:16px 18px; background:var(--panel-2); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:12px;}
+  .chat-head img{width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid var(--purple-mid);}
+  .chat-head .ch-name{font-weight:700; font-size:14px;}
+  .chat-head .ch-status{font-family:var(--mono); font-size:11px; color:var(--ping); display:flex; align-items:center; gap:5px;}
+  .chat-head .ch-status .dotp{width:6px; height:6px; border-radius:50%; background:var(--ping);}
+  #chat-close{margin-left:auto; background:none; border:none; color:var(--muted); cursor:pointer; font-size:18px;}
+  html[dir="rtl"] #chat-close{margin-left:0; margin-right:auto;}
+  #chat-messages{flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:12px;}
+  .msg{max-width:85%; padding:10px 14px; border-radius:12px; font-size:13.5px; line-height:1.5;}
+  .msg.bot{background:var(--panel-2); color:var(--text); align-self:flex-start; border-bottom-left-radius:3px;}
+  .msg.user{background:var(--purple-mid); color:#fff; align-self:flex-end; border-bottom-right-radius:3px;}
+  html[dir="rtl"] .msg.bot{align-self:flex-end; border-bottom-left-radius:12px; border-bottom-right-radius:3px;}
+  html[dir="rtl"] .msg.user{align-self:flex-start; border-bottom-right-radius:12px; border-bottom-left-radius:3px;}
+  .chip-row{display:flex; flex-wrap:wrap; gap:6px; padding:0 18px 12px;}
+  .chip{font-size:12px; padding:6px 11px; border-radius:14px; border:1px solid var(--line); color:var(--lavender-soft); background:var(--panel-2); cursor:pointer; white-space:nowrap; transition:border-color .15s;}
+  .chip:hover{border-color:var(--purple-mid);}
+  #chat-input-row{display:flex; gap:8px; padding:14px; border-top:1px solid var(--line);}
+  #chat-input{flex:1; background:var(--panel-2); border:1px solid var(--line); border-radius:8px; color:var(--text); padding:10px 12px; font-size:13.5px; font-family:var(--sans);}
+  #chat-input:focus{outline:none; border-color:var(--purple-mid);}
+  #chat-send{background:var(--purple-mid); border:none; border-radius:8px; width:40px; color:#fff; cursor:pointer;}
+  #chat-send:hover{background:var(--purple-deep);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .portrait-frame{order:-1; max-width:220px;}
+    .about-grid{grid-template-columns:1fr;}
+    .skill-cats{grid-template-columns:1fr;}
+    .cert-grid{grid-template-columns:1fr;}
+    .course-list{grid-template-columns:1fr;}
+    .contact-grid{grid-template-columns:1fr;}
+    .project-grid{grid-template-columns:1fr;}
+    nav.links{display:none;}
+    .nav-toggle{display:flex;}
+    #chat-panel{width:calc(100vw - 32px); right:16px;}
+    #chat-toggle{right:16px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="prompt">noha@security<span style="color:var(--muted)">:</span>~$<span class="cursor"></span></div>
+    <nav class="links">
+      <a href="#about" data-i18n="navAbout">about</a>
+      <a href="#skills" data-i18n="navSkills">skills</a>
+      <a href="#projects" data-i18n="navProjects">projects</a>
+      <a href="#gallery" data-i18n="navGallery">highlights</a>
+      <a href="#experience" data-i18n="navExperience">experience</a>
+      <a href="#certifications" data-i18n="navCertifications">certifications</a>
+      <a href="#contact" data-i18n="navContact">contact</a>
+    </nav>
+    <div class="nav-controls">
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" title="Toggle black / white theme">🌙</button>
+      <button id="lang-toggle" class="icon-btn" aria-label="Toggle language" title="Toggle Arabic / English">EN</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-grid">
+      <div class="terminal">
+        <div class="terminal-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="terminal-title">whoami — noha_alqrenawi.sh</span>
+        </div>
+        <div class="terminal-body">
+          <div class="line"><span class="k">$</span> <span class="val" data-i18n="cmdCat">cat profile.txt</span></div>
+          <div class="line"><span class="k" data-i18n="lblRole">role:</span> <span class="val" data-i18n="valRole">Cybersecurity Engineering Student</span></div>
+          <div class="line"><span class="k" data-i18n="lblFocus">focus:</span> <span class="val" data-i18n="valFocus">SOC Analysis · Threat Hunting · Web Application Security</span></div>
+          <div class="line"><span class="k" data-i18n="lblLocation">location:</span> <span class="val" data-i18n="valLocation">Gaza, Palestine</span></div>
+
+          <h1>Noha Y. Alqrenawi</h1>
+          <div class="role" data-i18n="heroTagline">Detecting threats. Solving hard problems. Learning beyond borders.</div>
+
+          <div class="status-badge"><span class="pulse"></span> <span data-i18n="statusBadge">open to cybersecurity internships &amp; international collaboration</span></div>
+
+          <div class="cta-row">
+            <a href="#contact" class="btn btn-primary" data-i18n="ctaContact">Get in touch</a>
+            <a href="#experience" class="btn btn-ghost" data-i18n="ctaBackground">View background</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="portrait-frame">
+        <div class="scan-box">
+          <img src="noha.jpg" alt="Noha Y. Alqrenawi">
+          <span class="scan-corner tl"></span>
+          <span class="scan-corner tr"></span>
+          <span class="scan-corner bl"></span>
+          <span class="scan-corner br"></span>
+          <div class="scan-line"></div>
+        </div>
+        <div class="scan-tag"><span class="sdot"></span><span data-i18n="scanTag">IDENTITY VERIFIED</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-head">
+      <div class="section-tag" data-i18n="tagAbout">01 · about</div>
+      <h2 class="section-title" data-i18n="titleAbout">Profile</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p data-i18n-html="aboutP1">I'm a <strong>Cybersecurity Engineering</strong> student at UCAS with a strong interest in securing and defending real-world systems. My interests span <strong>security operations, web application security, threat hunting, penetration testing</strong>, and security-focused AI applications.</p>
+        <p data-i18n-html="aboutP2">I learn by doing — through cybersecurity training, CTF competitions, technical projects, and hands-on labs, including the <strong>TryHackMe SOC Level 1</strong> path. These experiences have shaped how I approach problems: understand the system, investigate carefully, test assumptions, and document what I learn.</p>
+        <p data-i18n-html="aboutP3">Beyond technical work, I serve as <strong>Vice President of the Engineering Club</strong>, where I contribute to team coordination, technical events, workshops, and student-led initiatives. I enjoy working with others, learning from different perspectives, and turning technical knowledge into practical outcomes.</p>
+        <p data-i18n-html="aboutP4">I'm looking to contribute to real-world cybersecurity projects and international teams — collaborative environments where I can keep learning while delivering meaningful work.</p>
+      </div>
+      <div class="facts">
+        <div class="fact"><span class="label" data-i18n="factLocation">LOCATION</span><span class="value" data-i18n="valLocation2">Gaza, Palestine</span></div>
+        <div class="fact"><span class="label" data-i18n="factStatus">STATUS</span><span class="value" data-i18n="valStatus">BSc, Cyber Security Eng. (in progress)</span></div>
+        <div class="fact"><span class="label" data-i18n="factInstitution">INSTITUTION</span><span class="value">UCAS</span></div>
+        <div class="fact"><span class="label" data-i18n="factTop">TOP RESULT</span><span class="value" data-i18n="valTop">1st — AI Olympics, Cybersecurity Track</span></div>
+        <div class="fact"><span class="label" data-i18n="factLang">LANGUAGES</span><span class="value" data-i18n="valLang">Arabic (native), English (professional working proficiency)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-head">
+      <div class="section-tag" data-i18n="tagSkills">02 · skills</div>
+      <h2 class="section-title" data-i18n="titleSkills">Toolkit</h2>
+      <p class="section-sub" data-i18n="subSkills">Grouped the way I actually use them — from writing code, to detecting threats, to understanding how systems fail.</p>
+    </div>
+    <div class="skill-cats">
+      <div class="skill-card">
+        <h3 data-i18n="catProgramming">Programming & Technical</h3>
+        <div class="soft-tags"><span class="tag" data-i18n="skPython">Python</span><span class="tag" data-i18n="skJava">Java</span><span class="tag" data-i18n="skSQL">SQL</span><span class="tag" data-i18n="skLinux">Linux</span><span class="tag" data-i18n="skGit">Git</span><span class="tag" data-i18n="skWeb">Web Development</span><span class="tag" data-i18n="skCrypto">Cryptography</span></div>
+      </div>
+      <div class="skill-card">
+        <h3 data-i18n="catCyber">Security Operations & Defense</h3>
+        <div class="soft-tags"><span class="tag" data-i18n="skSOC">SOC Analysis</span><span class="tag" data-i18n="skThreat">Threat Hunting</span><span class="tag" data-i18n="skMalware">Malware Analysis</span><span class="tag" data-i18n="skDBSec">Database Security</span><span class="tag" data-i18n="skRisk">Risk Assessment</span></div>
+      </div>
+      <div class="skill-card">
+        <h3 data-i18n="catOffensive">Offensive Security</h3>
+        <div class="soft-tags"><span class="tag" data-i18n="skWebSec">Web Application Security</span><span class="tag" data-i18n="skPentest">Penetration Testing</span><span class="tag" data-i18n="skRecon">Reconnaissance & Enumeration</span><span class="tag" data-i18n="skVuln">Vulnerability Assessment</span><span class="tag" data-i18n="skExploit">Web Exploitation</span><span class="tag" data-i18n="skCTF">CTF</span></div>
+      </div>
+      <div class="skill-card">
+        <h3 data-i18n="catAI">AI & Data</h3>
+        <div class="soft-tags"><span class="tag" data-i18n="skML">Machine Learning</span><span class="tag" data-i18n="skDL">Deep Learning</span><span class="tag" data-i18n="skNLP">NLP</span><span class="tag" data-i18n="skAIDeploy">AI Deployment</span></div>
+      </div>
+      <div class="skill-card">
+        <h3 data-i18n="catSoft">Working style</h3>
+        <div class="soft-tags">
+          <span class="tag" data-i18n="softProblem">Problem Solving</span>
+          <span class="tag" data-i18n="softTeam">Team Collaboration</span>
+          <span class="tag" data-i18n="softTime">Time Management</span>
+          <span class="tag" data-i18n="softSelf">Self-Learning</span>
+          <span class="tag" data-i18n="softComm">Communication</span>
+          <span class="tag" data-i18n="softLead">Leadership</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-head">
+      <div class="section-tag" data-i18n="tagProjects">03 · projects</div>
+      <h2 class="section-title" data-i18n="titleProjects">Projects</h2>
+      <p class="section-sub" data-i18n="subProjects">Hands-on labs and builds that go beyond coursework.</p>
+    </div>
+    <div class="project-grid">
+      <div class="project-card">
+        <div class="project-thumb" data-slides="projects/snort,projects/snort-2,projects/snort-3">// snort3-reverse-shell-detection</div>
+        <div class="project-body">
+          <h4 data-i18n="proj1Title">Reverse Shell Detection with Snort 3</h4>
+          <p data-i18n="proj1Body">Built a custom Snort 3 detection rule to catch reverse shell activity inside an isolated Kali Linux / Windows 10 lab. Focused on traffic direction, TCP session state, and content matching to keep the alert precise rather than noisy. What I learned: the SOC workflow from detection and validation through investigation and response.</p>
+          <div class="project-tags">
+            <span>Snort 3</span><span>IDS</span><span>Network Security</span><span>SOC Analysis</span>
+          </div>
+          <div class="cta-row" style="margin-top:14px;">
+            <a href="https://github.com/Noha-Yasser/Snort-3-Reverse-Shell-Detection" target="_blank" rel="noopener" class="btn btn-ghost" style="padding:8px 16px; font-size:13px;" data-i18n="btnGithub">View on GitHub</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb" data-slides="projects/sysrad,projects/sysrad-2,projects/sysrad-3">// sysRAD</div>
+        <div class="project-body">
+          <h4 data-i18n="proj2Title">sysRAD — Real-Time Behavior-Based Ransomware Detection (Graduation Project)</h4>
+          <p data-i18n="proj2Body">A real-time, behavior-based ransomware detection system for Windows environments using machine learning — built as my graduation project with two teammates, then presented and discussed before an examination committee. Structured with dedicated config, machine learning model, and test modules in Python. I contribute to the project structure, model development, configuration, and testing. Hosted on my teammate's GitHub as a shared team repository.</p>
+          <div class="project-tags">
+            <span>Python</span><span>Machine Learning</span><span>Ransomware Detection</span><span>Windows</span><span data-i18n="tagGradProject">Graduation Project</span>
+          </div>
+          <div class="cta-row" style="margin-top:14px;">
+            <a href="https://github.com/hudamedoukh/sysRAD" target="_blank" rel="noopener" class="btn btn-ghost" style="padding:8px 16px; font-size:13px;" data-i18n="btnGithub">View on GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="section-sub" style="margin-top:24px;" data-i18n="moreProjectsNote">More projects will be added here as they're documented.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- JOURNEY & HIGHLIGHTS -->
+  <section id="gallery">
+    <div class="section-head">
+      <div class="section-tag" data-i18n="tagGallery">04 · moments</div>
+      <h2 class="section-title" data-i18n="titleGallery">Journey & Highlights</h2>
+      <p class="section-sub" data-i18n="subGallery">Competitions, leadership, training, and community moments along the way.</p>
+    </div>
+    
+    <div class="gallery-grid">
+      <div class="gallery-card">
+        <div class="gallery-thumb" data-slides="events/cyber-awareness,events/cyber-awareness-2">
+          <div class="gallery-ph"><span>📷</span><span data-i18n="photoPending">Photo pending</span></div>
+          <span class="gallery-icon">🛡️</span>
+          <span class="gallery-year">2022</span>
+        </div>
+        <div class="gallery-cap" data-i18n="gal4">Cybersecurity Awareness Event</div>
+
+        <div class="gallery-extra"><div class="gallery-desc" data-i18n="gal4D">Attended an awareness event where invited speakers gave an overview of the cybersecurity field.</div></div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-thumb" data-slides="events/ctf-2023,events/ctf-2023-2">
+          <div class="gallery-ph"><span>📷</span><span data-i18n="photoPending">Photo pending</span></div>
+          <span class="gallery-icon">🔒</span>
+          <span class="gallery-year">2023</span>
+        </div>
+        <div class="gallery-cap" data-i18n="gal1">CTF Competition — 4th Place</div>
+        <div class="gallery-extra"><div class="gallery-desc" data-i18n="gal1D">Placed 4th in the UCAS × CyberTalents CTF, solving challenges in cryptography, web exploitation, and digital forensics.</div><a class="gallery-link" href="https://lnkd.in/p/dCADVVhV" target="_blank" rel="noopener" data-i18n="btnLinkedIn">View on LinkedIn ↗</a></div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-thumb" data-slides="events/pcpc-honor-1,events/pcpc-honor-2">
+          <div class="gallery-ph"><span>📷</span><span data-i18n="photoPending">Photo pending</span></div>
+          <span class="gallery-icon">🏆</span>
+          <span class="gallery-year">2025</span>
+        </div>
+        <div class="gallery-cap" data-i18n="galPcpc">Honoring the PCPC Win — 2nd Place, Gaza Strip</div>
+        <div class="gallery-extra"><div class="gallery-desc" data-i18n="galPcpcD">Recognition ceremony for placing 2nd in the Gaza Strip at the Palestinian Collegiate Programming Contest.</div><a class="gallery-link" href="https://ucas.edu.ps/news/8445" target="_blank" rel="noopener" data-i18n="btnNews">Read the UCAS news ↗</a></div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-thumb" data-slides="events/jawwal-day-1,events/jawwal-day-2">
+          <div class="gallery-ph"><span>📷</span><span data-i18n="photoPending">Photo pending</span></div>
+          <span class="gallery-icon">📱</span>
+          <span class="gallery-year">2026</span>
+        </div>
+        <div class="gallery-cap" data-i18n="galJaw">Jawwal Day — Networking in Practice</div>
+        <div class="gallery-extra"><div class="gallery-desc" data-i18n="galJawD">A day with JAWWAL for Cyber Security and AI students: network fundamentals — ADSL, Fiber, and Wireless services and the infrastructure behind them — connecting theory to real-world practice.</div><a class="gallery-link" href="https://lnkd.in/p/dKuJmWMV" target="_blank" rel="noopener" data-i18n="btnLinkedIn">View on LinkedIn ↗</a></div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-thumb" data-slides="events/ctf-post-1,events/ctf-post-2">
+          <div class="gallery-ph"><span>📷</span><span data-i18n="photoPending">Photo pending</span></div>
+          <span class="gallery-icon">🔒</span>
+          <span class="gallery-year">2026</span>
+        </div>
+        <div class="gallery-cap" data-i18n="galCtf">CTF Competition — 25 Teams</div>
+        <div class="gallery-extra"><div class="gallery-desc" data-i18n="galCtfD">My second CTF experience — competing with my team among 25 teams while helping organize and coordinate the activity as Vice President of the Engineering Club.</div><a class="gallery-link" href="https://lnkd.in/p/dg_bdDva" target="_blank" rel="noopener" data-i18n="btnLinkedIn">View on LinkedIn ↗</a></div>
+      </div>
+      <div class="gallery-card">
+        
+        <div class="gallery-thumb">
+          <img src="events/AI-Olympics.png" alt="AI Olympics — 1st Place, Cybersecurity Track" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='certs/ai-olympics-1st.jpeg';}else{this.style.display='none'; this.nextElementSibling.style.display='flex';}">
+          <div class="gallery-ph"><span>📷</span><span data-i18n="photoPending">Photo pending</span></div>
+          <span class="gallery-icon">🥇</span>
+          <span class="gallery-year">2026</span>
+        </div>
+        <div class="gallery-cap" data-i18n="gal0">AI Olympics — 1st Place, Cybersecurity Track</div>
+        <div class="gallery-extra"><div class="gallery-desc" data-i18n="galAiD">Ranked 1st in Palestine in the Cybersecurity track — Gaza Sky Geeks & STEAM Center.</div><a class="gallery-link" href="https://www.ucas.edu.ps/news/8538" target="_blank" rel="noopener" data-i18n="btnNews">Read the UCAS news ↗</a></div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-thumb" data-slides="events/web-exhibition-1,events/web-exhibition-2">
+          <div class="gallery-ph"><span>📷</span><span data-i18n="photoPending">Photo pending</span></div>
+          <span class="gallery-icon">🧩</span>
+          <span class="gallery-year">2026</span>
+        </div>
+        <div class="gallery-cap" data-i18n="galWeb">Web Exhibition & Tournament — Organization & Supervision</div>
+        <div class="gallery-extra"><div class="gallery-desc" data-i18n="galWebD">Helped organize and supervise the Engineering Club's Web Exhibition and tournament as Vice President, where student teams presented their web projects.</div><a class="gallery-link" href="https://lnkd.in/p/dihQQiqb" target="_blank" rel="noopener" data-i18n="btnLinkedIn">View on LinkedIn ↗</a></div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-thumb" data-slides="events/grad-discussion-1,events/grad-discussion-2">
+          <div class="gallery-ph"><span>📷</span><span data-i18n="photoPending">Photo pending</span></div>
+          <span class="gallery-icon">🎓</span>
+          <span class="gallery-year">2026</span>
+        </div>
+        <div class="gallery-cap" data-i18n="galGrad">Graduation Project Discussion — sysRAD</div>
+        <div class="gallery-extra"><div class="gallery-desc" data-i18n="galGradD">Presented and discussed our graduation project before the examination committee — sysRAD: Real-Time Behavior-Based Ransomware Detection in Windows Environment Using Machine Learning.</div><a class="gallery-link" href="https://lnkd.in/p/dUhuSXXT" target="_blank" rel="noopener" data-i18n="btnLinkedIn">View on LinkedIn ↗</a></div>
+      </div>
+    </div>
+<div class="subhead" style="margin-top:34px;" data-i18n="newsTitle">In the news</div>
+    <div class="news-row">
+      <a class="news-card" href="https://www.ucas.edu.ps/news/8538" target="_blank" rel="noopener"><div data-i18n="news1">UCAS News — AI Olympics: 1st Place, Cybersecurity Track</div><span data-i18n="newsRead">Read the article ↗</span></a>
+      <a class="news-card" href="https://ucas.edu.ps/news/8445" target="_blank" rel="noopener"><div data-i18n="news2">UCAS News — PCPC: 2nd Place, Gaza Strip</div><span data-i18n="newsRead">Read the article ↗</span></a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- EXPERIENCE / EDUCATION -->
+  <section id="experience">
+    <div class="section-head">
+      <div class="section-tag" data-i18n="tagBackground">05 · background</div>
+      <h2 class="section-title" data-i18n="titleBackground">Experience & Education</h2>
+    </div>
+
+    <div class="subhead" data-i18n="subLeadership">Leadership & Experience</div>
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-date" data-i18n="dateVP">Mar 2026 — Present</div>
+        <div class="t-title" data-i18n="titleVP">Vice President, Engineering Club</div>
+        <div class="t-org">University College of Applied Sciences (UCAS)</div>
+        <div class="t-desc">
+          <ul>
+            <li data-i18n="vpL1">Support club leadership and coordinate workflow across Media, Public Relations, Activities, and other committees.</li>
+            <li data-i18n="vpL2">Follow up with committee leads to ensure smooth execution of tasks and activities.</li>
+            <li data-i18n="vpL3">Collaborate with students across committees to support the planning and delivery of technical events, workshops, and competitions.</li>
+            <li data-i18n="vpL4">Contribute to strategic decisions and club development initiatives.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="t-item">
+        <div class="t-date" data-i18n="dateSec">Dec 2025 — Mar 2026</div>
+        <div class="t-title" data-i18n="titleSec">Secretary, Engineering Club</div>
+        <div class="t-org">University College of Applied Sciences (UCAS)</div>
+        <div class="t-desc">
+          <ul>
+            <li data-i18n="secL1">Managed internal communication, meeting documentation, and official reports.</li>
+            <li data-i18n="secL2">Coordinated schedules, follow-ups, and logistics between members and committees.</li>
+            <li data-i18n="secL3">Maintained organized records and documentation of club activities.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="subhead" data-i18n="subEducation">Education</div>
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-date" data-i18n="dateEdu">Sep 2022 — Present</div>
+        <div class="t-title" data-i18n="titleEdu">BSc in Cyber Security Engineering</div>
+        <div class="t-org">University College of Applied Sciences (UCAS), Gaza, Palestine</div>
+        <div class="t-desc" data-i18n="eduDesc">Currently completing my degree with a focus on applied cybersecurity — security operations, web security, and hands-on practice.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <div class="section-head">
+      <div class="section-tag" data-i18n="tagCerts">06 · proof of work</div>
+      <h2 class="section-title" data-i18n="titleCerts">Achievements &amp; Proof of Work</h2>
+    </div>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <div class="cert-top"><span class="cert-badge">MAY 2026</span></div>
+        <div class="cert-body">
+          <h4 data-i18n="cert2Title">1st Place — Cybersecurity Track, AI Olympics</h4>
+          <p data-i18n="cert2Body">Gaza Sky Geeks & STEAM Center.</p>
+          <button class="cert-view-btn" data-cert-img="certs/ai-olympics-1st.jpeg" data-cert-title="1st Place — AI Olympics" data-i18n="btnViewCert">View Certificate</button>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-top"><span class="cert-badge">OCT 2025</span></div>
+        <div class="cert-body">
+          <h4 data-i18n="cert3Title">2nd Place — PCPC Gaza Strip</h4>
+          <p data-i18n="cert3Body">Palestinian Collegiate Programming Contest.</p>
+          <button class="cert-view-btn" data-cert-img="certs/pcpc-2nd.png" data-cert-title="2nd Place — PCPC Gaza Strip" data-i18n="btnViewCert">View Certificate</button>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-top"><span class="cert-badge">JUL 2023</span></div>
+        <div class="cert-body">
+          <h4 data-i18n="cert4Title">4th Place — CTF Competition</h4>
+          <p data-i18n="cert4Body">UCAS × CyberTalents.</p>
+          <button class="cert-view-btn" data-cert-img="certs/ctf-4th.jpg" data-cert-title="4th Place — CTF Competition" data-i18n="btnViewCert">View Certificate</button>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-top"><span class="cert-badge">APR 2026</span></div>
+        <div class="cert-body">
+          <h4 data-i18n="cert1Title">AI+ Developer™ Certification — AI CERTs®</h4>
+          <p data-i18n="cert1Body">International certification, scored 90%. Covered Python for AI, Machine Learning, Deep Learning, NLP, and AI deployment.</p>
+          <button class="cert-view-btn" data-cert-img="certs/ai-plus-developer.jpeg" data-cert-title="AI+ Developer™ Certification" data-i18n="btnViewCert">View Certificate</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- COURSES -->
+  <section id="courses">
+    <div class="section-head">
+      <div class="section-tag" data-i18n="tagCourses">07 · training</div>
+      <h2 class="section-title" data-i18n="titleCourses">Courses & Training</h2>
+    </div>
+    <div class="course-list">
+      <div class="course-item">
+        <div class="c-top"><h4 data-i18n="course2Title">SOC Level 1</h4><span class="c-date">TryHackMe</span></div>
+        <p data-i18n="course2Body">SOC fundamentals, alert triage, investigation, phishing analysis, defensive security, and incident response.</p>
+        <button class="cert-view-btn" data-cert-img="certs/thm-soc-level1.png" data-cert-title="SOC Level 1 — TryHackMe" data-i18n="btnViewCert">View Certificate</button>
+      </div>
+      <div class="course-item">
+        <div class="c-top"><h4 data-i18n="course1Title">Jr Penetration Tester</h4><span class="c-date">TryHackMe</span></div>
+        <p data-i18n="course1Body">Web app security, reconnaissance, enumeration, vulnerability identification, exploitation, and pentesting methodology.</p>
+        <span class="status-tag"><span class="sp"></span><span data-i18n="statusInProgress">In progress</span></span>
+      </div>
+      <div class="course-item">
+        <div class="c-top"><h4 data-i18n="course5Title">Cybersecurity Training</h4><span class="c-date">GSG / STEAM Center</span></div>
+        <p data-i18n="course5Body">Network monitoring, penetration testing, malware analysis, and defense against social engineering.</p>
+        <button class="cert-view-btn" data-cert-img="certs/ai-olympics-1st.jpeg" data-cert-title="Cybersecurity Training — GSG / STEAM Center" data-i18n="btnViewCert">View Certificate</button>
+      </div>
+      <div class="course-item">
+        <div class="c-top"><h4 data-i18n="course6Title">Advanced Threat Hunting &amp; Intelligence</h4><span class="c-date">CyberTalents</span></div>
+        <p data-i18n="course6Body">Threat intelligence techniques, attacker profiling, and advanced detection strategies.</p>
+        <button class="cert-view-btn" data-cert-img="certs/cybertalents-threat-hunting.jpg" data-cert-title="Advanced Threat Hunting & Intelligence — CyberTalents" data-i18n="btnViewCert">View Certificate</button>
+      </div>
+      <div class="course-item">
+        <div class="c-top"><h4 data-i18n="course8Title">SOC Analysis & Threat Hunting</h4><span class="c-date">CyberTalents</span></div>
+        <p data-i18n="course8Body">Security operations, alert analysis, SIEM tools, and identifying suspicious activity.</p>
+        <button class="cert-view-btn" data-cert-img="certs/cybertalents-soc-threat-hunting.png" data-cert-title="SOC Analysis & Threat Hunting — CyberTalents" data-i18n="btnViewCert">View Certificate</button>
+      </div>
+      <div class="course-item">
+        <div class="c-top"><h4 data-i18n="course7Title">Database Security</h4><span class="c-date">Gaza Sky Geeks</span></div>
+        <p data-i18n="course7Body">Securing databases, access control models, encryption, and vulnerability mitigation.</p>
+        <button class="cert-view-btn" data-cert-img="certs/gsg-database-security.png" data-cert-title="Database Security — Gaza Sky Geeks" data-i18n="btnViewCert">View Certificate</button>
+      </div>
+      <div class="course-item">
+        <div class="c-top"><h4 data-i18n="course4Title">Offensive Security Foundations with Kali Linux</h4><span class="c-date">Gaza Sky Geeks</span></div>
+        <p data-i18n="course4Body">Intensive training on Kali Linux and foundational penetration testing concepts.</p>
+        <button class="cert-view-btn" data-cert-img="certs/gsg-kali-foundations.jpg" data-cert-title="Offensive Security Foundations with Kali Linux" data-i18n="btnViewCert">View Certificate</button>
+      </div>
+      <div class="course-item">
+        <div class="c-top"><h4 data-i18n="course3Title">Penetration Testing</h4><span class="c-date">Udemy</span></div>
+        <p data-i18n="course3Body">Foundational offensive security skills and penetration testing methodologies.</p>
+        <span class="status-tag"><span class="sp"></span><span data-i18n="statusInProgress">In progress</span></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- LANGUAGES -->
+  <section id="languages">
+    <div class="section-head">
+      <div class="section-tag" data-i18n="tagLang">08 · languages</div>
+      <h2 class="section-title" data-i18n="titleLang">Languages</h2>
+    </div>
+    <div class="lang-row">
+      <div class="lang-item">
+        <div class="lname" data-i18n="langArabic">Arabic</div>
+        <div class="lang-level" data-i18n="levelNative">Native</div>
+      </div>
+      <div class="lang-item">
+        <div class="lname" data-i18n="langEnglish">English</div>
+        <div class="lang-level" data-i18n="levelFluent">Professional Working Proficiency</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-head">
+      <div class="section-tag" data-i18n="tagContact">09 · contact</div>
+      <h2 class="section-title" data-i18n="titleContact">Let's talk</h2>
+      <p class="section-sub" data-i18n="subContact">Open to cybersecurity internships, international remote projects, and collaborative security work.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon">@</div>
+        <div><div class="c-label" data-i18n="lblEmail">EMAIL</div><div class="c-value">nohayalqrinawi@gmail.com</div></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">#</div>
+        <div><div class="c-label" data-i18n="lblPhone">PHONE</div><div class="c-value">+970 59 520 3664</div></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">in</div>
+        <div><div class="c-label" data-i18n="lblLinkedIn">LINKEDIN</div><div class="c-value"><a href="https://www.linkedin.com/in/noha-y-alqrenawi-0825a0232" target="_blank" rel="noopener" style="color:inherit;">linkedin.com/in/noha-y-alqrenawi-0825a0232</a></div></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">&lt;/&gt;</div>
+        <div><div class="c-label" data-i18n="lblGitHub">GITHUB</div><div class="c-value"><a href="https://github.com/Noha-Yasser" target="_blank" rel="noopener" style="color:inherit;">github.com/Noha-Yasser</a></div></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer data-i18n="footerText">© 2026 Noha Y. Alqrenawi — built with curiosity and a lot of coffee.</footer>
+
+<!-- CERTIFICATE MODAL -->
+<div id="cert-modal">
+  <div class="cert-modal-box">
+    <div class="cert-modal-head">
+      <h4 id="cert-modal-title">Certificate</h4>
+      <button id="cert-modal-close" aria-label="Close">✕</button>
+    </div>
+    <div class="cert-modal-body" id="cert-modal-body"></div>
+  </div>
+</div>
+
+<!-- CHATBOT -->
+<button id="chat-toggle" aria-label="Open chat">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 4h16v12H7l-3 3V4z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<div id="chat-panel">
+  <div class="chat-head">
+    <img src="noha.jpg" alt="Noha">
+    <div>
+      <div class="ch-name" data-i18n="chatTitle">Ask about Noha</div>
+      <div class="ch-status"><span class="dotp"></span> <span data-i18n="chatStatus">Portfolio assistant · Online</span></div>
+    </div>
+    <button id="chat-close" aria-label="Close chat">✕</button>
+  </div>
+  <div id="chat-messages"></div>
+  <div class="chip-row" id="chat-chips"></div>
+  <div id="chat-input-row">
+    <input id="chat-input" type="text" data-i18n-ph="chatPlaceholder" placeholder="Ask about skills, projects, achievements...">
+    <button id="chat-send" aria-label="Send">➤</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* ===================== THEME TOGGLE ===================== */
+  const html = document.documentElement;
+  const themeBtn = document.getElementById('theme-toggle');
+  themeBtn.addEventListener('click', () => {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    themeBtn.textContent = isDark ? '☀️' : '🌙';
+  });
+
+  /* ===================== SKILL BAR ANIMATION ===================== */
+  const fills = document.querySelectorAll('.skill-fill');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.style.width = e.target.dataset.pct + '%';
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.3});
+  fills.forEach(f => io.observe(f));
+
+  /* ===================== GALLERY SLIDERS ===================== */
+  (function(){
+    const exts = ['jpg','jpeg','png','webp'];
+    function tryLoad(base){
+      return new Promise(resolve => {
+        let i = 0;
+        (function next(){
+          if(i >= exts.length) return resolve(null);
+          const src = base + '.' + exts[i++];
+          const im = new Image();
+          im.onload = () => resolve(src);
+          im.onerror = next;
+          im.src = src;
+        })();
+      });
+    }
+    document.querySelectorAll('.gallery-thumb[data-slides], .project-thumb[data-slides]').forEach(async thumb => {
+      const bases = thumb.dataset.slides.split(',').map(x => x.trim()).filter(Boolean);
+      const found = (await Promise.all(bases.map(tryLoad))).filter(Boolean);
+      const ph = thumb.querySelector('.gallery-ph');
+      if(!found.length){ if(ph) ph.style.display = 'flex'; return; }
+      const imgs = found.map((src, k) => {
+        const im = document.createElement('img');
+        im.src = src; im.className = 'slide' + (k === 0 ? ' on' : ''); im.alt = '';
+        thumb.appendChild(im); return im;
+      });
+      if(imgs.length < 2) return;
+      const dots = document.createElement('div'); dots.className = 'slide-dots';
+      const ds = imgs.map((_, k) => { const d = document.createElement('i'); if(k === 0) d.className = 'on'; dots.appendChild(d); return d; });
+      thumb.appendChild(dots);
+      let cur = 0, paused = false;
+      function show(n){
+        imgs[cur].classList.remove('on'); ds[cur].classList.remove('on');
+        cur = n; imgs[cur].classList.add('on'); ds[cur].classList.add('on');
+      }
+      thumb.addEventListener('mouseenter', () => paused = true);
+      thumb.addEventListener('mouseleave', () => paused = false);
+      setInterval(() => { if(!paused) show((cur + 1) % imgs.length); }, 3500);
+    });
+  })();
+
+  /* Card order: oldest -> newest. Set to true to show newest first. */
+  const JOURNEY_NEWEST_FIRST = true;
+  (function(){
+    if(!JOURNEY_NEWEST_FIRST) return;
+    const g = document.querySelector('.gallery-grid');
+    if(g) [...g.children].reverse().forEach(c => g.appendChild(c));
+  })();
+
+  /* ===================== I18N ===================== */
+  const dict = {
+    en: {
+      navAbout:"about", navSkills:"skills", navProjects:"projects", navGallery:"highlights", navExperience:"experience",
+      navCertifications:"certifications", navContact:"contact",
+      cmdCat:"cat profile.txt", lblRole:"role:", valRole:"Cybersecurity Engineering Student",
+      lblFocus:"focus:", valFocus:"SOC Analysis · Threat Hunting · Web Application Security",
+      lblLocation:"location:", valLocation:"Gaza, Palestine",
+      heroTagline:"Detecting threats. Solving hard problems. Learning beyond borders.",
+      statusBadge:"open to cybersecurity internships & international collaboration",
+      ctaContact:"Get in touch", ctaBackground:"View background",
+      scanTag:"IDENTITY VERIFIED",
+      tagAbout:"01 · about", titleAbout:"Profile",
+      aboutP1:"I'm a <strong>Cybersecurity Engineering</strong> student at UCAS with a strong interest in securing and defending real-world systems. My interests span <strong>security operations, web application security, threat hunting, penetration testing</strong>, and security-focused AI applications.",
+      aboutP2:"I learn by doing — through cybersecurity training, CTF competitions, technical projects, and hands-on labs, including the <strong>TryHackMe SOC Level 1</strong> path. These experiences have shaped how I approach problems: understand the system, investigate carefully, test assumptions, and document what I learn.",
+      aboutP3:"Beyond technical work, I serve as <strong>Vice President of the Engineering Club</strong>, where I contribute to team coordination, technical events, workshops, and student-led initiatives. I enjoy working with others, learning from different perspectives, and turning technical knowledge into practical outcomes.",
+      aboutP4:"I'm looking to contribute to real-world cybersecurity projects and international teams — collaborative environments where I can keep learning while delivering meaningful work.",
+      factLocation:"LOCATION", valLocation2:"Gaza, Palestine",
+      factStatus:"STATUS", valStatus:"BSc, Cyber Security Eng. (in progress)",
+      factInstitution:"INSTITUTION",
+      factTop:"TOP RESULT", valTop:"1st — AI Olympics, Cybersecurity Track",
+      factLang:"LANGUAGES", valLang:"Arabic (native), English (professional working proficiency)",
+      tagSkills:"02 · skills", titleSkills:"Toolkit",
+      subSkills:"Grouped the way I actually use them — from writing code, to detecting threats, to understanding how systems fail.",
+      catProgramming:"Programming & Technical", catOffensive:"Offensive Security", catCyber:"Security Operations & Defense", catAI:"AI & Data", catSoft:"Working style",
+      skML:"Machine Learning", skDL:"Deep Learning", skNLP:"NLP", skAIDeploy:"AI Deployment",
+      skPython:"Python", skJava:"Java", skSQL:"SQL", skLinux:"Linux", skWeb:"Web Development", skGit:"Git",
+      skWebSec:"Web Application Security", skPentest:"Penetration Testing", skRecon:"Reconnaissance & Enumeration",
+      skVuln:"Vulnerability Assessment", skExploit:"Web Exploitation", skCTF:"CTF",
+      skSOC:"SOC Analysis", skThreat:"Threat Hunting", skMalware:"Malware Analysis", skCrypto:"Cryptography",
+      skDBSec:"Database Security", skRisk:"Risk Assessment",
+      softProblem:"Problem Solving", softTeam:"Team Collaboration", softTime:"Time Management",
+      softSelf:"Self-Learning", softComm:"Communication", softLead:"Leadership",
+      tagProjects:"03 · projects", titleProjects:"Projects",
+      subProjects:"Hands-on labs and builds that go beyond coursework.",
+      proj1Title:"Reverse Shell Detection with Snort 3",
+      proj1Body:"Built a custom Snort 3 detection rule to catch reverse shell activity inside an isolated Kali Linux / Windows 10 lab. Focused on traffic direction, TCP session state, and content matching to keep the alert precise rather than noisy. What I learned: the SOC workflow from detection and validation through investigation and response.",
+      proj2Title:"sysRAD — Real-Time Behavior-Based Ransomware Detection (Graduation Project)",
+      proj2Body:"A real-time, behavior-based ransomware detection system for Windows environments using machine learning — built as my graduation project with two teammates, then presented and discussed before an examination committee. Structured with dedicated config, machine learning model, and test modules in Python. I contribute to the project structure, model development, configuration, and testing. Hosted on my teammate's GitHub as a shared team repository.",
+      tagGradProject:"Graduation Project",
+      btnGithub:"View on GitHub",
+      moreProjectsNote:"More projects will be added here as they're documented.",
+      statusInProgress:"In progress",
+      tagGallery:"04 · moments", titleGallery:"Journey & Highlights",
+      subGallery:"Competitions, leadership, training, and community moments along the way.",
+      gal0:"AI Olympics — 1st Place, Cybersecurity Track",
+      galAiD:"Ranked 1st in Palestine in the Cybersecurity track — Gaza Sky Geeks & STEAM Center.", btnNews:"Read the UCAS news ↗",
+      galPcpc:"Honoring the PCPC Win — 2nd Place, Gaza Strip", galPcpcD:"Recognition ceremony for placing 2nd in the Gaza Strip at the Palestinian Collegiate Programming Contest.",
+      galCtf:"CTF Competition — 25 Teams", galCtfD:"My second CTF experience — competing with my team among 25 teams while helping organize and coordinate the activity as Vice President of the Engineering Club.",
+      galGrad:"Graduation Project Discussion — sysRAD", galGradD:"Presented and discussed our graduation project before the examination committee — sysRAD: Real-Time Behavior-Based Ransomware Detection in Windows Environment Using Machine Learning.",
+      galWeb:"Web Exhibition & Tournament — Organization & Supervision", galWebD:"Helped organize and supervise the Engineering Club's Web Exhibition and tournament as Vice President, where student teams presented their web projects.",
+      galJaw:"Jawwal Day — Networking in Practice", galJawD:"A day with JAWWAL for Cyber Security and AI students: network fundamentals — ADSL, Fiber, and Wireless services and the infrastructure behind them — connecting theory to real-world practice.",
+      btnLinkedIn:"View on LinkedIn ↗", newsTitle:"In the news", newsRead:"Read the article ↗",
+      news1:"UCAS News — AI Olympics: 1st Place, Cybersecurity Track", news2:"UCAS News — PCPC: 2nd Place, Gaza Strip",
+      photoPending:"Photo pending",
+      gal1:"CTF Competition — 4th Place", gal1D:"Placed 4th in the UCAS × CyberTalents CTF, solving challenges in cryptography, web exploitation, and digital forensics.",
+      gal2:"PCPC Participant — 2025",
+      gal3:"Engineering Club Participation — 2022",
+      gal4:"Cybersecurity Awareness Event", gal4D:"Attended an awareness event where invited speakers gave an overview of the cybersecurity field.",
+      gal5:"CTF Prep Trainings Experience",
+      gal6:"Top Ranks in Regional CTF Competitions",
+      gal7:"Expert Talks on Cybersecurity & AI",
+      tagBackground:"05 · background", titleBackground:"Experience & Education",
+      subLeadership:"Leadership & Experience",
+      dateVP:"Mar 2026 — Present", titleVP:"Vice President, Engineering Club",
+      vpL1:"Support club leadership and coordinate workflow across Media, Public Relations, Activities, and other committees.",
+      vpL2:"Follow up with committee leads to ensure smooth execution of tasks and activities.",
+      vpL3:"Collaborate with students across committees to support the planning and delivery of technical events, workshops, and competitions.",
+      vpL4:"Contribute to strategic decisions and club development initiatives.",
+      dateSec:"Dec 2025 — Mar 2026", titleSec:"Secretary, Engineering Club",
+      secL1:"Managed internal communication, meeting documentation, and official reports.",
+      secL2:"Coordinated schedules, follow-ups, and logistics between members and committees.",
+      secL3:"Maintained organized records and documentation of club activities.",
+      subEducation:"Education", dateEdu:"Sep 2022 — Present", titleEdu:"BSc in Cyber Security Engineering",
+      eduDesc:"Currently completing my degree with a focus on applied cybersecurity — security operations, web security, and hands-on practice.",
+      tagCerts:"06 · proof of work", titleCerts:"Achievements & Proof of Work",
+      cert1Title:"AI+ Developer™ Certification — AI CERTs®",
+      cert1Body:"International certification, scored 90%. Covered Python for AI, Machine Learning, Deep Learning, NLP, and AI deployment.",
+      cert2Title:"1st Place — Cybersecurity Track, AI Olympics", cert2Body:"Gaza Sky Geeks & STEAM Center.",
+      cert3Title:"2nd Place — PCPC Gaza Strip", cert3Body:"Palestinian Collegiate Programming Contest.",
+      cert4Title:"4th Place — CTF Competition", cert4Body:"UCAS × CyberTalents.",
+      tagCourses:"07 · training", titleCourses:"Courses & Training",
+      course1Title:"Jr Penetration Tester", course1Body:"Web app security, reconnaissance, enumeration, vulnerability identification, exploitation, and pentesting methodology.",
+      course2Title:"SOC Level 1", course2Body:"SOC fundamentals, alert triage, investigation, phishing analysis, defensive security, and incident response.",
+      course3Title:"Penetration Testing", course3Body:"Foundational offensive security skills and penetration testing methodologies.",
+      course4Title:"Offensive Security Foundations with Kali Linux", course4Body:"Intensive training on Kali Linux and foundational penetration testing concepts.",
+      course5Title:"Cybersecurity Training", course5Body:"Network monitoring, penetration testing, malware analysis, and defense against social engineering.",
+      course6Title:"Advanced Threat Hunting & Intelligence", course6Body:"Threat intelligence techniques, attacker profiling, and advanced detection strategies.",
+      course7Title:"Database Security", course7Body:"Securing databases, access control models, encryption, and vulnerability mitigation.",
+      course8Title:"SOC Analysis & Threat Hunting", course8Body:"Security operations, alert analysis, SIEM tools, and identifying suspicious activity.",
+      tagLang:"08 · languages", titleLang:"Languages",
+      langArabic:"Arabic", langEnglish:"English", levelNative:"Native", levelFluent:"Professional Working Proficiency",
+      tagContact:"09 · contact", titleContact:"Let's talk",
+      subContact:"Open to cybersecurity internships, international remote projects, and collaborative security work.",
+      lblEmail:"EMAIL", lblPhone:"PHONE", lblLinkedIn:"LINKEDIN", lblGitHub:"GITHUB",
+      valAddLink:"Add your LinkedIn profile link", valAddLink2:"Add your GitHub profile link",
+      footerText:"© 2026 Noha Y. Alqrenawi — built with curiosity and a lot of coffee.",
+      chatTitle:"Ask about Noha", chatStatus:"Portfolio assistant · Online", chatPlaceholder:"Ask about skills, projects, achievements...",
+      btnViewCert:"View Certificate", certNotFound:"Certificate image not uploaded yet. Add it to the /certs folder to display it here."
+    },
+    ar: {
+      navAbout:"نبذة", navSkills:"المهارات", navProjects:"المشاريع", navGallery:"المحطات", navExperience:"الخبرة",
+      navCertifications:"الشهادات", navContact:"تواصل",
+      cmdCat:"cat profile.txt", lblRole:"الدور:", valRole:"طالبة هندسة أمن سيبراني",
+      lblFocus:"التخصص:", valFocus:"تحليل SOC · صيد التهديدات · أمن تطبيقات الويب",
+      lblLocation:"الموقع:", valLocation:"غزة، فلسطين",
+      heroTagline:"أرصد التهديدات. أحل المشكلات الصعبة. أتعلم عبر الحدود.",
+      statusBadge:"متاحة لتدريبات الأمن السيبراني والتعاون الدولي",
+      ctaContact:"تواصل معي", ctaBackground:"شاهدي خلفيتي المهنية",
+      scanTag:"تم التحقق من الهوية",
+      tagAbout:"01 · نبذة", titleAbout:"الملف الشخصي",
+      aboutP1:"أنا طالبة <strong>هندسة أمن سيبراني</strong> في UCAS ولدي اهتمام كبير بحماية الأنظمة الحقيقية والدفاع عنها. تشمل اهتماماتي <strong>عمليات الأمن، أمن تطبيقات الويب، صيد التهديدات، اختبار الاختراق</strong>، وتطبيقات الذكاء الاصطناعي الموجهة للأمن.",
+      aboutP2:"أتعلم بالممارسة — من خلال التدريب في الأمن السيبراني، ومسابقات CTF، والمشاريع التقنية، والمختبرات العملية، ومنها مسار <strong>SOC Level 1</strong> على TryHackMe. شكّلت هذه التجارب طريقتي في التعامل مع المشكلات: فهم النظام، التحقيق بعناية، اختبار الافتراضات، وتوثيق ما أتعلمه.",
+      aboutP3:"إلى جانب العمل التقني، أشغل منصب <strong>نائبة رئيس النادي الهندسي</strong>، حيث أساهم في تنسيق الفريق والفعاليات التقنية وورش العمل والمبادرات الطلابية. أستمتع بالعمل مع الآخرين والتعلم من وجهات نظر مختلفة وتحويل المعرفة التقنية إلى نتائج عملية.",
+      aboutP4:"أسعى للمساهمة في مشاريع أمن سيبراني حقيقية وفرق دولية — بيئات تعاونية أواصل فيها التعلم وأقدم عملًا ذا قيمة.",
+      factLocation:"الموقع", valLocation2:"غزة، فلسطين",
+      factStatus:"الحالة", valStatus:"بكالوريوس هندسة أمن سيبراني (قيد الدراسة)",
+      factInstitution:"الجهة",
+      factTop:"أفضل إنجاز", valTop:"المركز الأول — أولمبياد الذكاء الاصطناعي، مسار الأمن السيبراني",
+      factLang:"اللغات", valLang:"العربية (لغة أم)، الإنجليزية (كفاءة مهنية)",
+      tagSkills:"02 · المهارات", titleSkills:"الأدوات والمهارات",
+      subSkills:"مصنّفة بنفس الطريقة التي أستخدمها فعلًا — من كتابة الكود، إلى رصد التهديدات، إلى فهم سبب فشل الأنظمة.",
+      catProgramming:"البرمجة والمهارات التقنية", catOffensive:"الأمن الهجومي", catCyber:"عمليات الأمن والدفاع", catAI:"الذكاء الاصطناعي والبيانات", catSoft:"مهارات العمل",
+      skML:"التعلم الآلي", skDL:"التعلم العميق", skNLP:"معالجة اللغة الطبيعية", skAIDeploy:"نشر نماذج الذكاء الاصطناعي",
+      skPython:"بايثون", skJava:"جافا", skSQL:"SQL", skLinux:"لينكس", skWeb:"تطوير الويب", skGit:"Git",
+      skWebSec:"أمن تطبيقات الويب", skPentest:"اختبار الاختراق", skRecon:"الاستطلاع وتعداد الأنظمة",
+      skVuln:"تقييم الثغرات", skExploit:"استغلال الويب", skCTF:"CTF",
+      skSOC:"تحليل SOC", skThreat:"صيد التهديدات", skMalware:"تحليل البرمجيات الخبيثة", skCrypto:"التشفير",
+      skDBSec:"أمن قواعد البيانات", skRisk:"تقييم المخاطر",
+      softProblem:"حل المشكلات", softTeam:"العمل الجماعي", softTime:"إدارة الوقت",
+      softSelf:"التعلّم الذاتي", softComm:"التواصل", softLead:"القيادة",
+      tagProjects:"03 · المشاريع", titleProjects:"المشاريع",
+      subProjects:"مختبرات ومشاريع عملية تتجاوز المواد الدراسية.",
+      proj1Title:"كشف Reverse Shell باستخدام Snort 3",
+      proj1Body:"صممت قاعدة كشف مخصصة في Snort 3 لرصد نشاط reverse shell داخل بيئة مختبر معزولة (Kali Linux و Windows 10). ركّزت على اتجاه الحركة المرورية، حالة جلسة TCP، ومطابقة المحتوى لجعل التنبيه دقيقًا لا مزعجًا. ما تعلمته: منهجية SOC من الكشف والتحقق وصولًا إلى التحقيق والاستجابة.",
+      proj2Title:"sysRAD — كشف برمجيات الفدية اعتمادًا على السلوك بشكل لحظي (مشروع التخرج)",
+      proj2Body:"نظام لكشف برمجيات الفدية (Ransomware) في بيئة Windows بشكل لحظي اعتمادًا على السلوك وباستخدام تعلم الآلة — بنيته كمشروع تخرج مع زميلتين، وقدمناه وناقشناه أمام لجنة المناقشة. منظم بمجلدات منفصلة للإعدادات ونموذج تعلم الآلة والاختبارات بلغة بايثون. أساهم في هيكلة المشروع وتطوير النموذج والإعدادات والاختبار. مرفوع على حساب GitHub الخاص بزميلتي كمشروع جماعي مشترك.",
+      tagGradProject:"مشروع تخرج",
+      btnGithub:"عرض على GitHub",
+      moreProjectsNote:"سيتم إضافة مشاريع أخرى هنا بعد توثيقها.",
+      statusInProgress:"قيد الإنجاز",
+      tagGallery:"04 · لحظات", titleGallery:"الرحلة والمحطات البارزة",
+      subGallery:"مسابقات وقيادة وتدريب ولحظات مجتمعية على طول الطريق.",
+      gal0:"أولمبياد الذكاء الاصطناعي — المركز الأول، مسار الأمن السيبراني",
+      galAiD:"المركز الأول في فلسطين في مسار الأمن السيبراني — Gaza Sky Geeks و STEAM Center.", btnNews:"اقرئي خبر الكلية ↗",
+      galPcpc:"تكريم الفوز بمسابقة PCPC — المركز الثاني، قطاع غزة", galPcpcD:"حفل تكريم بعد تحقيق المركز الثاني في قطاع غزة بالمسابقة الفلسطينية للبرمجة الجامعية.",
+      galCtf:"مسابقة CTF — 25 فريقًا", galCtfD:"تجربتي الثانية في CTF — نافست مع فريقي بين 25 فريقًا، وساهمت في تنظيم وتنسيق الفعالية بصفتي نائبة رئيس النادي الهندسي.",
+      galGrad:"مناقشة مشروع التخرج — sysRAD", galGradD:"قدمنا وناقشنا مشروع تخرجنا أمام لجنة المناقشة — sysRAD: كشف برمجيات الفدية (Ransomware) في بيئة Windows بشكل لحظي اعتمادًا على السلوك باستخدام تعلم الآلة.",
+      galWeb:"معرض الويب والدوري — تنظيم وإشراف", galWebD:"ساهمت في تنظيم والإشراف على معرض الويب والدوري الذي أقامه النادي الهندسي بصفتي نائبة رئيس النادي، حيث عرضت فرق الطلبة مشاريع الويب.",
+      galJaw:"يوم جوال — الشبكات على أرض الواقع", galJawD:"يوم مع شركة JAWWAL لطلاب هندسة الأمن السيبراني والذكاء الاصطناعي: أساسيات الشبكات — خدمات ADSL وFiber وWireless والبنية التحتية التي تدعمها — لربط الجانب النظري بالتطبيق العملي.",
+      btnLinkedIn:"عرض على لينكدإن ↗", newsTitle:"في الأخبار", newsRead:"اقرئي الخبر ↗",
+      news1:"أخبار UCAS — أولمبياد الذكاء الاصطناعي: المركز الأول، مسار الأمن السيبراني", news2:"أخبار UCAS — PCPC: المركز الثاني، قطاع غزة",
+      photoPending:"الصورة قيد الإضافة",
+      gal1:"مسابقة CTF — المركز الرابع", gal1D:"حققت المركز الرابع في مسابقة CTF من UCAS × CyberTalents، وحللت تحديات في التشفير واستغلال الويب والأدلة الرقمية.",
+      gal2:"مشاركة في PCPC — 2025",
+      gal3:"مشاركة في النادي الهندسي — 2022",
+      gal4:"فعالية التوعية بالأمن السيبراني", gal4D:"حضرت فعالية توعوية استضاف فيها المنظمون مختصين قدّموا نظرة عامة عن مجال الأمن السيبراني.",
+      gal5:"تجربة تدريبات تحضير CTF",
+      gal6:"مراكز متقدمة في مسابقات CTF إقليمية",
+      gal7:"محاضرات خبراء في الأمن السيبراني والذكاء الاصطناعي",
+      tagBackground:"05 · الخلفية المهنية", titleBackground:"الخبرة والتعليم",
+      subLeadership:"القيادة والخبرة",
+      dateVP:"مارس 2026 — حتى الآن", titleVP:"نائبة رئيس النادي الهندسي",
+      vpL1:"دعم قيادة النادي وتنسيق سير العمل بين لجان الإعلام والعلاقات العامة والأنشطة وغيرها.",
+      vpL2:"متابعة رؤساء اللجان لضمان تنفيذ المهام والأنشطة بسلاسة.",
+      vpL3:"التعاون مع الطلاب من مختلف اللجان لدعم تخطيط وتنفيذ الفعاليات التقنية وورش العمل والمسابقات.",
+      vpL4:"المشاركة في القرارات الاستراتيجية ومبادرات تطوير النادي.",
+      dateSec:"ديسمبر 2025 — مارس 2026", titleSec:"سكرتيرة النادي الهندسي",
+      secL1:"إدارة التواصل الداخلي وتوثيق الاجتماعات والتقارير الرسمية.",
+      secL2:"تنسيق الجداول والمتابعات واللوجستيات بين الأعضاء واللجان.",
+      secL3:"الحفاظ على سجلات منظمة لأنشطة النادي.",
+      subEducation:"التعليم", dateEdu:"سبتمبر 2022 — حتى الآن", titleEdu:"بكالوريوس هندسة أمن سيبراني",
+      eduDesc:"أدرس حاليًا مع تركيز على الأمن السيبراني التطبيقي — عمليات الأمن وأمن الويب والتطبيق العملي.",
+      tagCerts:"06 · إثبات العمل", titleCerts:"الإنجازات وإثبات العمل",
+      cert1Title:"شهادة AI+ Developer™ — AI CERTs®",
+      cert1Body:"شهادة دولية بنتيجة 90%. غطت بايثون للذكاء الاصطناعي، التعلم الآلي، التعلم العميق، معالجة اللغة الطبيعية، ونشر نماذج الذكاء الاصطناعي.",
+      cert2Title:"المركز الأول — مسار الأمن السيبراني، أولمبياد الذكاء الاصطناعي", cert2Body:"Gaza Sky Geeks و STEAM Center.",
+      cert3Title:"المركز الثاني — PCPC قطاع غزة", cert3Body:"المسابقة الفلسطينية للبرمجة الجامعية.",
+      cert4Title:"المركز الرابع — مسابقة CTF", cert4Body:"UCAS × CyberTalents.",
+      tagCourses:"07 · التدريب", titleCourses:"الدورات والتدريبات",
+      course1Title:"Jr Penetration Tester", course1Body:"أمن تطبيقات الويب، الاستطلاع، تعداد الأنظمة، تحديد الثغرات، الاستغلال، ومنهجية اختبار الاختراق.",
+      course2Title:"SOC Level 1", course2Body:"أساسيات SOC، فرز التنبيهات، التحقيق، تحليل التصيد، الأمن الدفاعي، والاستجابة للحوادث.",
+      course3Title:"اختبار الاختراق", course3Body:"مهارات أساسية في الأمن الهجومي ومنهجيات اختبار الاختراق.",
+      course4Title:"أساسيات الأمن الهجومي مع Kali Linux", course4Body:"تدريب مكثف على Kali Linux ومفاهيم اختبار الاختراق الأساسية.",
+      course5Title:"تدريب الأمن السيبراني", course5Body:"مراقبة الشبكات، اختبار الاختراق، تحليل البرمجيات الخبيثة، والحماية من الهندسة الاجتماعية.",
+      course6Title:"صيد التهديدات المتقدم والاستخبارات", course6Body:"تقنيات الاستخبارات، تحليل سلوك المهاجمين، واستراتيجيات الكشف المتقدمة.",
+      course7Title:"أمن قواعد البيانات", course7Body:"تأمين قواعد البيانات، نماذج التحكم بالوصول، التشفير، والتخفيف من الثغرات.",
+      course8Title:"تحليل SOC وصيد التهديدات", course8Body:"عمليات الأمن، تحليل التنبيهات، أدوات SIEM، وتحديد الأنشطة المشبوهة.",
+      tagLang:"08 · اللغات", titleLang:"اللغات",
+      langArabic:"العربية", langEnglish:"الإنجليزية", levelNative:"لغة أم", levelFluent:"كفاءة مهنية",
+      tagContact:"09 · تواصل", titleContact:"لنتحدث",
+      subContact:"متاحة لتدريبات الأمن السيبراني والمشاريع الدولية عن بعد والعمل الأمني التعاوني.",
+      lblEmail:"البريد الإلكتروني", lblPhone:"الهاتف", lblLinkedIn:"لينكدإن", lblGitHub:"جيت هاب",
+      valAddLink:"أضيفي رابط حسابك على لينكدإن", valAddLink2:"أضيفي رابط حسابك على جيت هاب",
+      footerText:"© 2026 نهى ي. القريناوي — صُنع بفضول وكثير من القهوة.",
+      chatTitle:"اسأل عن نهى", chatStatus:"مساعد البورتوفوليو · متصل", chatPlaceholder:"اسألي عن المهارات، المشاريع، الإنجازات...",
+      btnViewCert:"عرض الشهادة", certNotFound:"لم يتم رفع صورة الشهادة بعد. أضيفيها إلى مجلد /certs لعرضها هنا."
+    }
+  };
+
+  let currentLang = 'en';
+  const langBtn = document.getElementById('lang-toggle');
+
+  function applyLang(lang){
+    currentLang = lang;
+    html.lang = lang;
+    html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    langBtn.textContent = lang === 'ar' ? 'AR' : 'EN';
+    const d = dict[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if(d[key] !== undefined) el.textContent = d[key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const key = el.getAttribute('data-i18n-html');
+      if(d[key] !== undefined) el.innerHTML = d[key];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const key = el.getAttribute('data-i18n-ph');
+      if(d[key] !== undefined) el.setAttribute('placeholder', d[key]);
+    });
+    // re-render chat greeting language if panel already opened
+    if(messages.children.length){
+      messages.innerHTML = '';
+      addMsg(getKB().greeting, 'bot');
+      renderChips();
+    }
+  }
+
+  langBtn.addEventListener('click', () => applyLang(currentLang === 'en' ? 'ar' : 'en'));
+
+  /* ===================== CERTIFICATE MODAL ===================== */
+  const certModal = document.getElementById('cert-modal');
+  const certModalTitle = document.getElementById('cert-modal-title');
+  const certModalBody = document.getElementById('cert-modal-body');
+  const certModalClose = document.getElementById('cert-modal-close');
+
+  document.querySelectorAll('.cert-view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const img = btn.getAttribute('data-cert-img');
+      const title = btn.getAttribute('data-cert-title');
+      certModalTitle.textContent = title;
+      certModalBody.innerHTML = '';
+      const image = new Image();
+      image.onload = () => { certModalBody.innerHTML = ''; certModalBody.appendChild(image); };
+      image.onerror = () => {
+        certModalBody.innerHTML = '<div class="cert-modal-empty">' + dict[currentLang].certNotFound + '<br><br>' + img + '</div>';
+      };
+      image.src = img;
+      image.alt = title;
+      certModal.classList.add('open');
+    });
+  });
+  certModalClose.addEventListener('click', () => certModal.classList.remove('open'));
+  certModal.addEventListener('click', (e) => { if(e.target === certModal) certModal.classList.remove('open'); });
+
+  /* ===================== CHATBOT ===================== */
+  const KB_EN = {
+    greeting: "Hi! I'm the portfolio assistant — I answer from Noha's background. Ask about her skills, projects, achievements, or how she works in a team.",
+    about: "Noha is a Cybersecurity Engineering student at UCAS with interests in security operations, web application security, threat hunting, and penetration testing, plus exposure to AI. She learns by doing: training, CTF competitions, technical projects, and hands-on labs.",
+    skills: "Her toolkit: Programming & Technical (Python, Java, SQL, Linux, Git, Web Development, Cryptography), Security Operations & Defense (SOC Analysis, Threat Hunting, Malware Analysis, Database Security, Risk Assessment), Offensive Security (Web App Security, Pentesting, Recon & Enumeration, Vulnerability Assessment, Web Exploitation, CTF), and AI & Data (Machine Learning, Deep Learning, NLP, AI Deployment). She completed TryHackMe SOC Level 1.",
+    education: "She's currently completing a BSc in Cyber Security Engineering at the University College of Applied Sciences (UCAS) in Gaza, Palestine — enrolled since September 2022.",
+    experience: "She's Vice President of the Engineering Club at UCAS (since March 2026), after serving as Secretary from December 2025 to March 2026 — coordinating with committees and supporting technical events, workshops, and student activities.",
+    certifications: "Key achievements: 1st place in Palestine in the Cybersecurity track at AI Olympics (Gaza Sky Geeks & STEAM Center), 2nd place at PCPC Gaza Strip, 4th place in a CTF competition (UCAS × CyberTalents), and the AI+ Developer™ certification (AI CERTs®, 90%).",
+    courses: "She completed SOC Level 1 on TryHackMe, Offensive Security Foundations with Kali Linux (Gaza Sky Geeks), plus training in threat hunting, database security, and SOC analysis. She's currently still working through Jr Penetration Tester on TryHackMe and a Penetration Testing course on Udemy.",
+    languages: "Arabic (native) and English (professional working proficiency).",
+    location: "She's based in Gaza, Palestine.",
+    contact: "You can reach her by email at nohayalqrinawi@gmail.com or by phone at +970 59 520 3664. Scroll to the Contact section for more.",
+    availability: "She's open to cybersecurity internships, international remote projects, and collaborative security work.",
+    projects: "Two projects so far: a custom Snort 3 detection rule for reverse shell activity in an isolated lab, and sysRAD — a real-time, behavior-based ransomware detection system for Windows using machine learning, her graduation project with two teammates. Both have GitHub links in the Projects section.",
+    whySelect: "Noha pairs hands-on SOC training (TryHackMe SOC Level 1) with strong competitive results — 1st in Palestine in the Cybersecurity track at AI Olympics and 2nd in the Gaza Strip at PCPC. She built a Snort 3 detection rule, presented her graduation project — a machine-learning ransomware detection system — and serves as Vice President of the Engineering Club.",
+    whyCyber: "She learns by doing — training, CTF competitions, labs, and projects like her Snort 3 reverse shell detection rule. She's drawn to security operations, threat hunting, and web application security.",
+    whyIntl: "Noha wants to apply her technical knowledge to a real-world cybersecurity project in an international, collaborative environment — working with others, learning from different perspectives, and delivering meaningful work. She works in English at a professional working level.",
+    team: "She's Vice President of the Engineering Club at UCAS (previously Secretary), where she coordinates with committee leads and supports technical events and workshops. She also built sysRAD with two teammates, competed with her team in a 25-team CTF, and her PCPC result strengthened her teamwork under time pressure.",
+    fallback: "I don't have that on file yet — try asking about her skills, projects, achievements, experience, or how to contact her."
+  };
+  const KB_AR = {
+    greeting: "أهلًا! أنا مساعد البورتوفوليو — أجيب من خلفية نهى المهنية. اسألني عن مهاراتها، مشاريعها، إنجازاتها، أو كيف تعمل ضمن فريق.",
+    about: "نهى طالبة هندسة أمن سيبراني في UCAS، تهتم بعمليات الأمن، أمن تطبيقات الويب، صيد التهديدات، واختبار الاختراق، مع خبرة في الذكاء الاصطناعي. تتعلم بالممارسة: تدريبات، مسابقات CTF، مشاريع تقنية، ومختبرات عملية.",
+    skills: "مهاراتها: البرمجة والتقنية (بايثون، جافا، SQL، لينكس، Git، تطوير ويب، التشفير)، عمليات الأمن والدفاع (تحليل SOC، صيد التهديدات، تحليل البرمجيات الخبيثة، أمن قواعد البيانات، تقييم المخاطر)، الأمن الهجومي (أمن تطبيقات الويب، اختبار الاختراق، الاستطلاع، تقييم الثغرات، استغلال الويب، CTF)، والذكاء الاصطناعي والبيانات (التعلم الآلي، التعلم العميق، NLP، نشر النماذج). وأكملت SOC Level 1 على TryHackMe.",
+    education: "تدرس حاليًا بكالوريوس هندسة أمن سيبراني في الكلية الجامعية للعلوم التطبيقية (UCAS) في غزة، فلسطين — منذ سبتمبر 2022.",
+    experience: "هي نائبة رئيس النادي الهندسي في UCAS (منذ مارس 2026)، وعملت سكرتيرة من ديسمبر 2025 حتى مارس 2026 — تنسّق مع اللجان وتدعم الفعاليات التقنية وورش العمل والأنشطة الطلابية.",
+    certifications: "أبرز إنجازاتها: المركز الأول في فلسطين في مسار الأمن السيبراني بأولمبياد الذكاء الاصطناعي (Gaza Sky Geeks و STEAM Center)، المركز الثاني في PCPC قطاع غزة، المركز الرابع في مسابقة CTF (UCAS × CyberTalents)، وشهادة AI+ Developer™ (AI CERTs®، بنتيجة 90%).",
+    courses: "أكملت SOC Level 1 على TryHackMe، أساسيات الأمن الهجومي مع Kali Linux، بالإضافة إلى تدريبات في صيد التهديدات، أمن قواعد البيانات، وتحليل SOC. وما زالت حاليًا تعمل على Jr Penetration Tester على TryHackMe ودورة اختبار الاختراق على Udemy.",
+    languages: "العربية (لغة أم) والإنجليزية (كفاءة مهنية).",
+    location: "مقرها غزة، فلسطين.",
+    contact: "يمكنك التواصل معها عبر البريد الإلكتروني nohayalqrinawi@gmail.com أو الهاتف ‎+970 59 520 3664.",
+    availability: "هي متاحة لتدريبات الأمن السيبراني والمشاريع الدولية عن بعد والعمل الأمني التعاوني.",
+    projects: "لديها مشروعان: قاعدة كشف مخصصة في Snort 3 لرصد نشاط reverse shell في بيئة مختبر معزولة، ومشروع sysRAD — نظام لكشف برمجيات الفدية في بيئة Windows اعتمادًا على السلوك وباستخدام تعلم الآلة، وهو مشروع تخرجها بالتعاون مع زميلتين. روابط GitHub لكليهما في قسم المشاريع.",
+    whySelect: "تجمع نهى بين تدريب عملي في SOC (SOC Level 1 على TryHackMe) ونتائج تنافسية قوية — المركز الأول في فلسطين في مسار الأمن السيبراني بأولمبياد الذكاء الاصطناعي والثاني في PCPC قطاع غزة. بنت قاعدة كشف في Snort 3، وقدّمت مشروع تخرجها — نظام لكشف برمجيات الفدية باستخدام تعلم الآلة — وتشغل منصب نائبة رئيس النادي الهندسي.",
+    whyCyber: "تتعلم بالممارسة — تدريبات ومسابقات CTF ومختبرات ومشاريع مثل قاعدة كشف reverse shell في Snort 3. وتميل إلى عمليات الأمن وصيد التهديدات وأمن تطبيقات الويب.",
+    whyIntl: "تريد نهى تطبيق معرفتها التقنية في مشروع أمن سيبراني حقيقي ضمن بيئة دولية تعاونية — تعمل مع الآخرين وتتعلم من وجهات نظر مختلفة وتقدم عملًا ذا قيمة. وتعمل بالإنجليزية بكفاءة مهنية.",
+    team: "هي نائبة رئيس النادي الهندسي في UCAS (وكانت سكرتيرة سابقًا)، حيث تنسّق مع رؤساء اللجان وتدعم الفعاليات التقنية وورش العمل. كما بنت sysRAD مع زميلتين، وشاركت مع فريقها في مسابقة CTF ضمت 25 فريقًا، وعزّزت نتيجتها في PCPC عملها الجماعي تحت ضغط الوقت.",
+    fallback: "ليس لدي معلومة عن هذا بعد — جربي تسألي عن المهارات، المشاريع، الإنجازات، الخبرة، أو طريقة التواصل."
+  };
+
+  function getKB(){ return currentLang === 'ar' ? KB_AR : KB_EN; }
+
+  const rules = [
+    { keys:["why should we","select noha","why noha","لماذا نختار"], key:"whySelect" },
+    { keys:["international","remote","beyond borders","دولي","عن بعد"], key:"whyIntl" },
+    { keys:["why cyber","why security","لماذا الأمن"], key:"whyCyber" },
+    { keys:["team","collaborat","teamwork","فريق"], key:"team" },
+    { keys:["skill","tech","stack","tool","python","linux","programming","مهار","بايثون","لينكس"], key:"skills" },
+    { keys:["education","degree","university","study","ucas","school","bsc","تعليم","جامعة","بكالوريوس"], key:"education" },
+    { keys:["experience","leadership","club","vice president","secretary","work","خبرة","قيادة","نادي","سكرتير"], key:"experience" },
+    { keys:["certif","achievement","award","olympiad","olympics","pcpc","ctf place","شهاد","انجاز","إنجاز","اولمب","أولمب"], key:"certifications" },
+    { keys:["course","training","tryhackme","udemy","soc level","kali","دورة","تدريب"], key:"courses" },
+    { keys:["language","arabic","english","لغ"], key:"languages" },
+    { keys:["location","where","gaza","based","live","موقع","اين","أين","غزة"], key:"location" },
+    { keys:["contact","email","phone","reach","number","تواصل","ايميل","إيميل","هاتف","رقم"], key:"contact" },
+    { keys:["available","hire","job","internship","opportunit","متاح","توظيف","وظيف","تدريب عملي"], key:"availability" },
+    { keys:["project","مشروع","مشاريع"], key:"projects" },
+    { keys:["about","who","summary","profile","background","نبذة","من هي","ملخص"], key:"about" }
+  ];
+  const greetWords = ["hi","hello","hey","assalam","salam","مرحبا","اهلا","أهلا","السلام"];
+
+  function respond(text){
+    const t = text.toLowerCase();
+    const kb = getKB();
+    const tokens = t.split(/[^a-z\u0600-\u06ff]+/).filter(Boolean);
+    if(tokens.length <= 3 && tokens.some(w => greetWords.includes(w))) return kb.greeting;
+    for(const r of rules){
+      if(r.keys.some(k => t.includes(k))) return kb[r.key];
+    }
+    return kb.fallback;
+  }
+
+  const toggle = document.getElementById('chat-toggle');
+  const panel = document.getElementById('chat-panel');
+  const closeBtn = document.getElementById('chat-close');
+  const messages = document.getElementById('chat-messages');
+  const input = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('chat-send');
+  const chips = document.getElementById('chat-chips');
+
+  function suggestionLabels(){
+    return currentLang === 'ar'
+      ? ["لماذا نختار نهى؟","أقوى مهاراتها","مشاريعها","إنجازاتها","العمل ضمن فريق","لماذا الأمن السيبراني؟","لماذا التعاون الدولي؟"]
+      : ["Why should we select Noha?","Her strongest skills","Her projects","Her achievements","How does she work in a team?","Why cybersecurity?","Why international collaboration?"];
+  }
+
+  function addMsg(text, who){
+    const div = document.createElement('div');
+    div.className = 'msg ' + who;
+    div.textContent = text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function renderChips(){
+    chips.innerHTML = '';
+    suggestionLabels().forEach(s => {
+      const c = document.createElement('div');
+      c.className = 'chip';
+      c.textContent = s;
+      c.onclick = () => { handleSend(s); };
+      chips.appendChild(c);
+    });
+  }
+
+  function handleSend(customText){
+    const val = (typeof customText === 'string' ? customText : input.value).trim();
+    if(!val) return;
+    addMsg(val, 'user');
+    input.value = '';
+    setTimeout(() => addMsg(respond(val), 'bot'), 350);
+  }
+
+  toggle.addEventListener('click', () => {
+    panel.classList.toggle('open');
+    if(panel.classList.contains('open') && messages.children.length === 0){
+      addMsg(getKB().greeting, 'bot');
+      renderChips();
+    }
+  });
+  closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+  sendBtn.addEventListener('click', () => handleSend());
+  input.addEventListener('keydown', e => { if(e.key === 'Enter') handleSend(); });
+
+  applyLang('en');
+})();
+</script>
+
+</body>
+</html>
